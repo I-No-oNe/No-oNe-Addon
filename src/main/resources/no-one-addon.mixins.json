@@ -2,10 +2,12 @@
   "required": true,
   "package": "net.i_no_am.clickcrystals.addon.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "net.i_no_am.clickcrystals.addon.client.data.MixinPluginManager",
   "mixins": [
     "MixinCapeManager",
     "MixinCategories",
     "MixinClickCrystals",
+    "MixinModMenu",
     "MixinNetworkEventListener",
     "MixinTextVisitFactory"
   ],

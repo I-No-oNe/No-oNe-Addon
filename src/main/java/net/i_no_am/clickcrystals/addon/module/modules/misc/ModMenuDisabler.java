@@ -1,17 +1,12 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
-import com.google.gson.*;
+import com.terraformersmc.modmenu.ModMenu;
+import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
-import io.github.itzispyder.clickcrystals.util.FileValidationUtils;
-import net.fabricmc.loader.api.FabricLoader;
 import net.i_no_am.clickcrystals.addon.client.data.Constants;
+import net.i_no_am.clickcrystals.addon.listener.events.modmenu.ModMenuInitEvent;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Path;
 
 public class ModMenuDisabler extends AddonModule {
 
@@ -27,61 +22,39 @@ public class ModMenuDisabler extends AddonModule {
             .build()
     );
 
-    @Override
-    public void onEnable() {
-        if (!FabricLoader.getInstance().isModLoaded("modmenu")) {
-            toggle();
-            return;
-        }
 
-        String modIdsString = modIdNames.getVal();
-        if (modIdsString.isEmpty()) return;
-
-        String[] modIds = modIdsString.split(",");
-
-        Path configDir = FabricLoader.getInstance().getConfigDir();
-        File modMenuConfigFile = configDir.resolve("modmenu.json").toFile();
-
-        if (!FileValidationUtils.validate(modMenuConfigFile)) {
-            JsonObject newConfig = new JsonObject();
-            newConfig.add("hidden_mods", new JsonArray());
-            FileValidationUtils.quickWrite(modMenuConfigFile, newConfig.toString());
-        }
-
-        try {
-            JsonObject modMenuConfig;
-            try (FileReader reader = new FileReader(modMenuConfigFile)) {
-                modMenuConfig = JsonParser.parseReader(reader).getAsJsonObject();
+    @EventHandler
+    public void onModMenuInitEvent(ModMenuInitEvent e) {
+        // todo: the print isnt working, need to solve this
+        ModMenu.MODS.forEach((id, mod) -> {
+            System.out.println(mod.getName());
+            if (isHidden(id)) {
+                ModMenu.MODS.remove(id);
             }
+        });
 
-            JsonArray hiddenMods;
-            if (modMenuConfig.has("hidden_mods") && modMenuConfig.get("hidden_mods").isJsonArray()) {
-                hiddenMods = modMenuConfig.getAsJsonArray("hidden_mods");
-            } else {
-                hiddenMods = new JsonArray();
-                modMenuConfig.add("hidden_mods", hiddenMods);
+        ModMenu.ROOT_MODS.forEach((id, mod) -> {
+            System.out.println(mod.getName());
+            if (isHidden(id)) {
+                ModMenu.MODS.remove(id);
             }
-
-            for (String modId : modIds) {
-                addModToHiddenMods(hiddenMods, modId.trim());
-            }
-
-            FileValidationUtils.quickWrite(modMenuConfigFile, modMenuConfig.toString());
-
-        } catch (IOException | JsonSyntaxException e) {
-            system.println("Error updating modmenu.json: " + e.getMessage());
-        }
+        });
+        ModMenu.PARENT_MAP.clear();
+        ModMenu.clearModCountCache();
     }
 
-    private void addModToHiddenMods(JsonArray hiddenMods, String modId) {
-        if (modId.isEmpty()) return;
-
-        for (JsonElement element : hiddenMods) {
-            if (element.getAsString().equals(modId)) {
-                return;
+    public boolean isHidden(String modId) {
+        String[] ids = modIdNames.getVal().split(",");
+        for (String id : ids) {
+            if (id.trim().equalsIgnoreCase(modId)) {
+                return true;
             }
         }
+        return false;
+    }
 
-        hiddenMods.add(modId);
+    public String numberOfHiddenMods() {
+        String[] ids = modIdNames.getVal().split(",");
+        return String.valueOf(ids.length);
     }
 }

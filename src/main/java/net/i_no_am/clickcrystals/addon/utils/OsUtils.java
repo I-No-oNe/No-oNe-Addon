@@ -1,6 +1,7 @@
 package net.i_no_am.clickcrystals.addon.utils;
 
 import io.github.itzispyder.clickcrystals.Global;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class OsUtils implements Global {
     public static @NotNull SYSTEM getOs() {
         if (OS.contains("win")) return WINDOW;
         if (OS.contains("nix") || OS.contains("nux") || OS.contains("aix")) return LINUX;
-        if (MinecraftClient.IS_SYSTEM_MAC || OS.contains("mac")) return MAC;
+        if (OS.contains("mac") || OS.contains("darwin")) return MAC;
         throw new UnsupportedOperationException("Unsupported operating system: " + OS);
     }
 
