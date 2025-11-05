@@ -6,6 +6,7 @@
     "MixinCapeManager",
     "MixinCategories",
     "MixinClickCrystals",
+    "MixinModMenu",
     "MixinNetworkEventListener",
     "MixinTextVisitFactory"
   ],
@@ -18,6 +19,7 @@
     "MixinInGameHud",
     "MixinKeyBinding",
     "MixinLivingEntityRenderer",
+    "MixinModsScreen",
     "MixinOverlayTexture",
     "MixinPlayerInteractionManager",
     "MixinTitleScreen"

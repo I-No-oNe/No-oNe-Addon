@@ -24,13 +24,16 @@ public class UpsideDown extends AddonListenerModule {
         SELF, PLAYERS, ENTITIES, NONE
     }
 
-    public boolean shouldIgnore(Entity entity) {
+    public boolean shouldIgnore(Iterable<Entity> entities) {
         IgnoreType ignoreType = this.ignoreType.getVal();
-        return switch (ignoreType) {
-            case SELF -> entity instanceof ClientPlayerEntity;
-            case PLAYERS -> entity instanceof PlayerEntity;
-            case ENTITIES -> !(entity instanceof ClientPlayerEntity);
-            case NONE -> false;
-        };
+        for (Entity entity : entities) {
+            return switch (ignoreType) {
+                case SELF -> entity instanceof ClientPlayerEntity;
+                case PLAYERS -> entity instanceof PlayerEntity;
+                case ENTITIES -> !(entity instanceof ClientPlayerEntity);
+                case NONE -> false;
+            };
+        }
+        return false;
     }
 }

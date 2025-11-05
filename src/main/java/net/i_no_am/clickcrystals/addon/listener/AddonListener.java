@@ -17,8 +17,8 @@ public class AddonListener extends TickEventListener {
             mc.execute(() -> {
 
                 Manager.version.notifyUpdate();
-
-                if (!AddonWelcomeScreen.isClosed & FileUtils.getValue("isFirstSeen", Boolean.class)) {
+                boolean bl = Boolean.TRUE.equals(FileUtils.getValue("isFirstSeen"));
+                if (!AddonWelcomeScreen.isClosed & bl) {
                     mc.setScreen(new AddonWelcomeScreen());
                     system.println("Welcome to ClickCrystals Addon by I-No-oNe!");
                     FileUtils.setValue("isFirstSeen", false);
