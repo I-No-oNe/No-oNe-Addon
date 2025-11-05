@@ -64,25 +64,38 @@ public class FileUtils implements Global {
         return readConfig().containsKey(key);
     }
 
-    public static <T> T getValue(String key, Class<T> type) {
+    @SuppressWarnings("unchecked")
+    public static <T> T getValue(String key) {
         Object value = readConfig().get(key);
         if (value == null) return null;
 
-        if (type.isInstance(value)) {
-            return type.cast(value);
-        } else if (value instanceof Double d) {
-            if (type == Integer.class || type == int.class) return type.cast(d.intValue());
-            if (type == Long.class || type == long.class) return type.cast(d.longValue());
-            if (type == Float.class || type == float.class) return type.cast(d.floatValue());
+        // If the value is already of the right type (as far as we can guess)
+        try {
+            return (T) value;
+        } catch (ClassCastException ignored) {
+            // We'll try to handle conversions below
+        }
+
+        if (value instanceof Number num) {
+            Object converted = num;
+
+            if (num instanceof Double d) {
+                if (Math.floor(d) == d) converted = (int) d.doubleValue();
+            }
+
+            try {
+                return (T) converted;
+            } catch (Exception ignored) {}
         }
 
         try {
-            return gson.fromJson(gson.toJsonTree(value), type);
+            return (T) gson.fromJson(gson.toJsonTree(value), Object.class);
         } catch (Exception e) {
             system.logger.error("Failed to cast key '" + key + "': " + e.getMessage());
             return null;
         }
     }
+
 
     public static boolean remove(String key) {
         Map<String, Object> data = readConfig();

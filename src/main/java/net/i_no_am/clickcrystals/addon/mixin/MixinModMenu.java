@@ -2,9 +2,7 @@ package net.i_no_am.clickcrystals.addon.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.terraformersmc.modmenu.ModMenu;
-import io.github.itzispyder.clickcrystals.Global;
 import io.github.itzispyder.clickcrystals.modules.Module;
-import net.i_no_am.clickcrystals.addon.listener.events.modmenu.ModMenuInitEvent;
 import net.i_no_am.clickcrystals.addon.module.modules.misc.ModMenuDisabler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,11 +10,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModMenu.class)
-public class MixinModMenu implements Global {
+public class MixinModMenu {
 
-    @Inject(method = "onInitializeClient", at = @At("HEAD"))
+    @Inject(method = "onInitializeClient", at = @At("TAIL"))
     private void onInitializeClient(CallbackInfo ci) {
-        system.eventBus.pass(new ModMenuInitEvent());
+        ModMenuDisabler mod = Module.get(ModMenuDisabler.class);
+        if (mod != null && mod.isEnabled()) mod.hideMods();
     }
 
     @ModifyReturnValue(method = "getDisplayedModCount", at = @At("RETURN"))
