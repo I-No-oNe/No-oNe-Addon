@@ -33,10 +33,11 @@ jobs:
       - name: Remove *-sources.jar
         run: rm ./build/libs/*-sources.jar || true
 
-      - uses: "0xDylan/action-auto-releases-n20@v1.1"
+      - name: Create automatic release
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest
           prerelease: false
           title: "Latest Build (1.21.9-1.21.10)"
           files: |
