@@ -14,8 +14,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions: write-all
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -27,17 +29,17 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build
+      - name: Build with Gradle
         run: ./gradlew build
 
       - name: Remove *-sources.jar
-        run: rm ./build/libs/*-sources.jar || true
+        run: rm -f ./build/libs/*-sources.jar || true
 
       - name: Create automatic release
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: latest
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: false
           title: "Latest Build (1.21.9-1.21.10)"
           files: |
