@@ -2,7 +2,7 @@ package net.i_no_am.clickcrystals.addon.mixin;
 
 import com.mojang.authlib.GameProfile;
 import io.github.itzispyder.clickcrystals.Global;
-import io.github.itzispyder.clickcrystals.client.client.CapeManager;
+import io.github.itzispyder.clickcrystals.client.system.CapeManager;
 import io.github.itzispyder.clickcrystals.modules.Module;
 import net.i_no_am.clickcrystals.addon.module.modules.misc.CapeDisabler;
 import net.minecraft.util.Identifier;

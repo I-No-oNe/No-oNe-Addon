@@ -2,7 +2,7 @@ package net.i_no_am.clickcrystals.addon.command;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import io.github.itzispyder.clickcrystals.commands.Command;
+import io.github.itzispyder.clickcrystals.client.commands.Command;
 import net.i_no_am.clickcrystals.addon.command.argument.LogFileArgumentType;
 import net.minecraft.command.CommandSource;
 

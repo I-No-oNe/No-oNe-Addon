@@ -1,7 +1,7 @@
 package net.i_no_am.clickcrystals.addon.client.data;
 
 import io.github.itzispyder.clickcrystals.Global;
-import io.github.itzispyder.clickcrystals.commands.Command;
+import io.github.itzispyder.clickcrystals.client.commands.Command;
 import io.github.itzispyder.clickcrystals.modules.Module;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;

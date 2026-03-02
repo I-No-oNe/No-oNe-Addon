@@ -1,10 +1,12 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
+import io.github.itzispyder.clickcrystals.modules.Module;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class UpsideDown extends AddonListenerModule {
@@ -24,16 +26,18 @@ public class UpsideDown extends AddonListenerModule {
         SELF, PLAYERS, ENTITIES, NONE
     }
 
-    public boolean shouldIgnore(Iterable<Entity> entities) {
-        IgnoreType ignoreType = this.ignoreType.getVal();
-        for (Entity entity : entities) {
-            return switch (ignoreType) {
-                case SELF -> entity instanceof ClientPlayerEntity;
-                case PLAYERS -> entity instanceof PlayerEntity;
-                case ENTITIES -> !(entity instanceof ClientPlayerEntity);
-                case NONE -> false;
-            };
-        }
-        return false;
+    public boolean apply(boolean original, LivingEntity entity) {
+        if (isEnabled())
+            return !shouldIgnore(entity);
+        return original;
+    }
+
+    boolean shouldIgnore(Entity entity) {
+        return switch (ignoreType.getVal()) {
+            case SELF -> entity instanceof ClientPlayerEntity;
+            case PLAYERS -> entity instanceof PlayerEntity;
+            case ENTITIES -> !(entity instanceof PlayerEntity || entity instanceof ClientPlayerEntity);
+            case NONE -> false;
+        };
     }
 }

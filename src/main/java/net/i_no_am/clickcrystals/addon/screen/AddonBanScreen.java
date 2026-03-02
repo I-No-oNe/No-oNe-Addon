@@ -6,12 +6,12 @@ import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import io.github.itzispyder.clickcrystals.gui.elements.common.interactive.HyperLinkElement;
 import io.github.itzispyder.clickcrystals.util.minecraft.render.RenderUtils;
 import net.i_no_am.clickcrystals.addon.utils.OsUtils;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
 
+@SuppressWarnings("unused")
 public class AddonBanScreen extends GuiScreen {
     public final int windowWidth = mc.getWindow().getScaledWidth();
     public final int windowHeight = mc.getWindow().getScaledHeight();
@@ -55,11 +55,5 @@ public class AddonBanScreen extends GuiScreen {
         cY += 10;
         discordLink.x = cX - discordLink.width / 2;
         discordLink.y = cY + 10;
-    }
-
-
-    @Override
-    public void resize(MinecraftClient client, int width, int height) {
-        client.setScreen(new AddonBanScreen());
     }
 }

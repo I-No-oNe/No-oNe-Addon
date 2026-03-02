@@ -1,8 +1,8 @@
 package net.i_no_am.clickcrystals.addon;
 
 import io.github.itzispyder.clickcrystals.Global;
-import io.github.itzispyder.clickcrystals.data.Config;
-import io.github.itzispyder.clickcrystals.data.JsonSerializable;
+import io.github.itzispyder.clickcrystals.client.system.Config;
+import io.github.itzispyder.clickcrystals.client.system.JsonSerializable;
 import net.fabricmc.api.ClientModInitializer;
 import net.i_no_am.clickcrystals.addon.client.Manager;
 import net.i_no_am.clickcrystals.addon.client.data.Constants;
@@ -34,7 +34,7 @@ public final class AddonManager implements ClientModInitializer, Global {
         system.addListener(new AddonListener());
         /*-----------------------------------------------------------------------------------------*/
         // Initialize Modules
-        system.addModule(new DiscordScreenDisabler());
+        system.addModule(new GUIFeaturesDisabler());
         system.addModule(new InfiniteChat());
         system.addModule(new CapeDisabler());
         system.addModule(new MiddleClickPing());

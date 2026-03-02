@@ -15,17 +15,17 @@ public class MixinClickCrystals {
      * @see AddonManager
      **/
 
-    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/data/Config;loadEntireConfig()V"), cancellable = true)
+    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/client/system/Config;loadEntireConfig()V"), cancellable = true)
     private void disableLoadingConfig(CallbackInfo ci) {
         ci.cancel();
     }
 
-    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/client/client/ProfileManager$ProfileConfig;getCurrentProfileName()Ljava/lang/String;"), cancellable = true)
+    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/client/system/ProfileManager$ProfileConfig;getCurrentProfileName()Ljava/lang/String;"), cancellable = true)
     private void disablePrintingProfiles(CallbackInfo ci) {
         ci.cancel();
     }
 
-    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/client/client/ProfileManager;init()V"), cancellable = true)
+    @Inject(remap = false, method = "onInitialize", at = @At(value = "INVOKE", target = "Lio/github/itzispyder/clickcrystals/client/system/ProfileManager;init()V"), cancellable = true)
     private void disableLoadingProfile(CallbackInfo ci) {
         ci.cancel();
     }

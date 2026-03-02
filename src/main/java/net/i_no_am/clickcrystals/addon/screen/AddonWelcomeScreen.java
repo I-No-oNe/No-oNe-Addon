@@ -5,7 +5,6 @@ import io.github.itzispyder.clickcrystals.gui.elements.common.interactive.Button
 import io.github.itzispyder.clickcrystals.util.StringUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.render.RenderUtils;
 import net.i_no_am.clickcrystals.addon.client.data.Constants;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
@@ -75,11 +74,6 @@ public class AddonWelcomeScreen extends GuiScreen {
 
         closeButton.x = cX - closeButton.width / 2;
         closeButton.y = websiteButton.y + btnSpacing;
-    }
-
-    @Override
-    public void resize(MinecraftClient client, int width, int height) {
-        client.setScreen(new AddonWelcomeScreen());
     }
 
     public void setClose() {

@@ -84,44 +84,35 @@ public class HitColor extends AddonListenerModule {
         if (nativeImage == null) return;
         Color color = getColor();
 
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
+        for (int i = 0; i < 16; ++i) {
+            for (int j = 0; j < 16; ++j) {
                 if (i < 8) {
                     nativeImage.setColorArgb(j, i, toArgb(color));
                 } else {
-                    int alpha = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
-                    nativeImage.setColorArgb(j, i, ColorHelper.withAlpha(alpha, -1));
+                    int k = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
+                    nativeImage.setColorArgb(j, i, ColorHelper.whiteWithAlpha(k));
                 }
-                RenderSystem.setupOverlayColor(originalTexture.getGlTextureView());
             }
         }
-
-        uploadTexture(originalTexture);
+        originalTexture.upload();
     }
 
     public void resetOverlayColor(NativeImageBackedTexture originalTexture) {
         NativeImage nativeImage = originalTexture.getImage();
         if (nativeImage == null) return;
 
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
+        for (int i = 0; i < 16; ++i) {
+            for (int j = 0; j < 16; ++j) {
                 if (i < 8) {
                     // Reset to default vanilla hit color
                     nativeImage.setColorArgb(j, i, -1291911168);
                 } else {
-                    int alpha = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
-                    nativeImage.setColorArgb(j, i, ColorHelper.withAlpha(alpha, -1));
+                    int k = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
+                    nativeImage.setColorArgb(j, i, ColorHelper.whiteWithAlpha(k));
                 }
             }
         }
-        uploadTexture(originalTexture);
-        RenderSystem.setupOverlayColor(originalTexture.getGlTextureView());
-    }
-
-    private void uploadTexture(NativeImageBackedTexture texture) {
-        texture.setFilter(false, false);
-        texture.setClamp(true);
-        texture.upload();
+        originalTexture.upload();
     }
 
 

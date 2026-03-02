@@ -1,10 +1,17 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
-import com.terraformersmc.modmenu.ModMenu;
+import com.google.gson.*;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
+import io.github.itzispyder.clickcrystals.util.FileValidationUtils;
+import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
+import net.fabricmc.loader.api.FabricLoader;
 import net.i_no_am.clickcrystals.addon.client.data.Constants;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class ModMenuDisabler extends AddonModule {
 
@@ -21,31 +28,59 @@ public class ModMenuDisabler extends AddonModule {
     );
 
     String[] IDS = modIdNames.getVal().split(",");
+    File MOD_MENU_CONFIG = FabricLoader.getInstance().getConfigDir().resolve("modmenu.json").toFile();
 
-    public void hideMods() {
-        ModMenu.MODS.forEach((id, mod) -> {
-            if (isHidden(id)) ModMenu.MODS.remove(id);
-        });
 
-        ModMenu.ROOT_MODS.forEach((id, mod) -> {
-            if (isHidden(id)) ModMenu.MODS.remove(id);
-        });
+    @Override
+    public void onEnable() {
+        if (!FabricLoader.getInstance().isModLoaded("modmenu")) {
+            toggle();
+            if (mc.player != null) ChatUtils.sendWarningMessage("ModMenu is not installed, cannot hide ClickCrystals from mod menu.");
+            return;
+        }
 
-        ModMenu.PARENT_MAP.clear();
-        ModMenu.clearModCountCache();
+        if (IDS == null) return;
+
+        if (!FileValidationUtils.validate(MOD_MENU_CONFIG)) {
+            JsonObject newConfig = new JsonObject();
+            newConfig.add("hidden_mods", new JsonArray());
+            FileValidationUtils.quickWrite(MOD_MENU_CONFIG, newConfig.toString());
+        }
+
+        try {
+            JsonObject NEW_MOD_MENU_CONFIG;
+            try (FileReader reader = new FileReader(MOD_MENU_CONFIG)) {
+                NEW_MOD_MENU_CONFIG = JsonParser.parseReader(reader).getAsJsonObject();
+            }
+
+            JsonArray hiddenMods;
+            if (NEW_MOD_MENU_CONFIG.has("hidden_mods") && NEW_MOD_MENU_CONFIG.get("hidden_mods").isJsonArray()) {
+                hiddenMods = NEW_MOD_MENU_CONFIG.getAsJsonArray("hidden_mods");
+            } else {
+                hiddenMods = new JsonArray();
+                NEW_MOD_MENU_CONFIG.add("hidden_mods", hiddenMods);
+            }
+
+            for (String modId : IDS) {
+                addModToHiddenMods(hiddenMods, modId.trim());
+            }
+
+            FileValidationUtils.quickWrite(MOD_MENU_CONFIG, NEW_MOD_MENU_CONFIG.toString());
+
+        } catch (IOException | JsonSyntaxException e) {
+            system.printf("Error updating modmenu.json: %s", e.getMessage());
+        }
     }
 
-    public static boolean isHidden(String modId) {
-        var mod = get(ModMenuDisabler.class);
-        for (String id : mod.IDS) {
-            if (id.trim().equalsIgnoreCase(modId)) {
-                return true;
+    private void addModToHiddenMods(JsonArray hiddenMods, String modId) {
+        if (modId.isEmpty()) return;
+
+        for (JsonElement element : hiddenMods) {
+            if (element.getAsString().equals(modId)) {
+                return;
             }
         }
-        return false;
-    }
 
-    public String numberOfHiddenMods() {
-        return String.valueOf(IDS.length);
+        hiddenMods.add(modId);
     }
 }

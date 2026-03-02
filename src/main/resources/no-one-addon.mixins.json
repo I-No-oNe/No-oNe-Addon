@@ -6,7 +6,6 @@
     "MixinCapeManager",
     "MixinCategories",
     "MixinClickCrystals",
-    "MixinModMenu",
     "MixinNetworkEventListener",
     "MixinTextVisitFactory"
   ],
@@ -15,12 +14,13 @@
   },
   "client": [
     "MixinChatScreen",
+    "MixinDefaultBase",
     "MixinHomeScreen",
     "MixinInGameHud",
     "MixinKeyBinding",
     "MixinLivingEntityRenderer",
-    "MixinModsScreen",
     "MixinOverlayTexture",
+    "MixinPlayerEntityRenderer",
     "MixinPlayerInteractionManager",
     "MixinTitleScreen"
   ]
