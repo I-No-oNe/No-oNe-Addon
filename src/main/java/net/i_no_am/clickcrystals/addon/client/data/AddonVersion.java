@@ -4,9 +4,9 @@ import io.github.itzispyder.clickcrystals.Global;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.i_no_am.clickcrystals.addon.utils.network.NetworkUtils;
-import net.minecraft.client.gui.screen.ConfirmScreen;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.ConfirmScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
 import java.net.URI;
@@ -26,11 +26,11 @@ public class AddonVersion implements Global {
 
     public void notifyUpdate() {
         if (status == VersionStatus.UP_TO_DATE) return;
-        if (!prompted && mc.currentScreen == null && mc.player != null) {
+        if (!prompted && mc.screen == null && mc.player != null) {
             mc.setScreen(new ConfirmScreen(confirm -> {
-                if (confirm) Util.getOperatingSystem().open(URI.create(Constants.URL.DOWNLOAD));
-                else mc.stop();
-            }, Text.of(Formatting.DARK_RED + "You are using an outdated version of " + Formatting.GREEN + "No one's Addon"), Text.of("Please download the latest version from " + Formatting.DARK_PURPLE + "Discord"), Text.of("Download"), Text.of("Quit Game")));
+                if (confirm) Util.getPlatform().openUri(URI.create(Constants.URL.DOWNLOAD));
+                else mc.destroy();
+            }, Component.nullToEmpty(ChatFormatting.DARK_RED + "You are using an outdated version of " + ChatFormatting.GREEN + "No one's Addon"), Component.nullToEmpty("Please download the latest version from " + ChatFormatting.DARK_PURPLE + "Discord"), Component.nullToEmpty("Download"), Component.nullToEmpty("Quit Game")));
             prompted = true;
         }
     }

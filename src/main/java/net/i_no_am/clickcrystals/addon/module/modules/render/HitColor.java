@@ -1,5 +1,6 @@
 package net.i_no_am.clickcrystals.addon.module.modules.render;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.events.events.world.ClientTickEndEvent;
@@ -8,10 +9,8 @@ import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import net.i_no_am.clickcrystals.addon.accessor.OverlayTextureAccessor;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.texture.NativeImageBackedTexture;
-import net.minecraft.util.math.ColorHelper;
-
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.util.ARGB;
 import java.awt.*;
 
 
@@ -58,7 +57,7 @@ public class HitColor extends AddonListenerModule {
             .build()
     );
 
-    private NativeImageBackedTexture imageBackedTexture;
+    private DynamicTexture imageBackedTexture;
 
     @Override
     public void onDisable() {
@@ -69,7 +68,7 @@ public class HitColor extends AddonListenerModule {
     @EventHandler
     private void onTick(ClientTickEndEvent event) {
         if (!isEnabled() || PlayerUtils.invalid()) return;
-        imageBackedTexture = ((OverlayTextureAccessor) mc.gameRenderer.getOverlayTexture()).addon$getTexture();
+        imageBackedTexture = ((OverlayTextureAccessor) mc.gameRenderer.overlayTexture()).addon$getTexture();
         applyOverlayColor(imageBackedTexture);
     }
 
@@ -79,36 +78,36 @@ public class HitColor extends AddonListenerModule {
         return new Color(red.getVal().intValue(), green.getVal().intValue(), blue.getVal().intValue(), invertedAlpha);
     }
 
-    public void applyOverlayColor(NativeImageBackedTexture originalTexture) {
-        NativeImage nativeImage = originalTexture.getImage();
+    public void applyOverlayColor(DynamicTexture originalTexture) {
+        NativeImage nativeImage = originalTexture.getPixels();
         if (nativeImage == null) return;
         Color color = getColor();
 
         for (int i = 0; i < 16; ++i) {
             for (int j = 0; j < 16; ++j) {
                 if (i < 8) {
-                    nativeImage.setColorArgb(j, i, toArgb(color));
+                    nativeImage.setPixel(j, i, toArgb(color));
                 } else {
                     int k = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
-                    nativeImage.setColorArgb(j, i, ColorHelper.whiteWithAlpha(k));
+                    nativeImage.setPixel(j, i, ARGB.white(k));
                 }
             }
         }
         originalTexture.upload();
     }
 
-    public void resetOverlayColor(NativeImageBackedTexture originalTexture) {
-        NativeImage nativeImage = originalTexture.getImage();
+    public void resetOverlayColor(DynamicTexture originalTexture) {
+        NativeImage nativeImage = originalTexture.getPixels();
         if (nativeImage == null) return;
 
         for (int i = 0; i < 16; ++i) {
             for (int j = 0; j < 16; ++j) {
                 if (i < 8) {
                     // Reset to default vanilla hit color
-                    nativeImage.setColorArgb(j, i, -1291911168);
+                    nativeImage.setPixel(j, i, -1291911168);
                 } else {
                     int k = (int) ((1.0F - (float) j / 15.0F * 0.75F) * 255.0F);
-                    nativeImage.setColorArgb(j, i, ColorHelper.whiteWithAlpha(k));
+                    nativeImage.setPixel(j, i, ARGB.white(k));
                 }
             }
         }

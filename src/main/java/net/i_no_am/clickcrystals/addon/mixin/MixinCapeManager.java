@@ -5,7 +5,7 @@ import io.github.itzispyder.clickcrystals.Global;
 import io.github.itzispyder.clickcrystals.client.system.CapeManager;
 import io.github.itzispyder.clickcrystals.modules.Module;
 import net.i_no_am.clickcrystals.addon.module.modules.misc.CapeDisabler;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

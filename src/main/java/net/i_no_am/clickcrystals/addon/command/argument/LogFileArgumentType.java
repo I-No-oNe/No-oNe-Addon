@@ -8,21 +8,20 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.itzispyder.clickcrystals.Global;
-import net.minecraft.command.CommandSource;
-import net.minecraft.text.Text;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 
 public class LogFileArgumentType implements ArgumentType<String>, Global {
 
     public static final String LOGS_FOLDER = "logs";
     private static final DynamicCommandExceptionType FILE_NOT_FOUND = new DynamicCommandExceptionType(name ->
-            Text.literal("Log file not found: " + name));
+            Component.literal("Log file not found: " + name));
 
     public static LogFileArgumentType create() {
         return new LogFileArgumentType();
@@ -43,7 +42,7 @@ public class LogFileArgumentType implements ArgumentType<String>, Global {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        return CommandSource.suggestMatching(getLogFileNames(), builder);
+        return SharedSuggestionProvider.suggest(getLogFileNames(), builder);
     }
 
     public List<String> getLogFileNames() {

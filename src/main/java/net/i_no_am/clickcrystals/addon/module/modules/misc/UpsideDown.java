@@ -4,10 +4,10 @@ import io.github.itzispyder.clickcrystals.modules.Module;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class UpsideDown extends AddonListenerModule {
     public UpsideDown() {
@@ -34,9 +34,9 @@ public class UpsideDown extends AddonListenerModule {
 
     boolean shouldIgnore(Entity entity) {
         return switch (ignoreType.getVal()) {
-            case SELF -> entity instanceof ClientPlayerEntity;
-            case PLAYERS -> entity instanceof PlayerEntity;
-            case ENTITIES -> !(entity instanceof PlayerEntity || entity instanceof ClientPlayerEntity);
+            case SELF -> entity instanceof LocalPlayer;
+            case PLAYERS -> entity instanceof Player;
+            case ENTITIES -> !(entity instanceof Player || entity instanceof LocalPlayer);
             case NONE -> false;
         };
     }

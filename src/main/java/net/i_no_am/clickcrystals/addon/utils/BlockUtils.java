@@ -1,15 +1,14 @@
 package net.i_no_am.clickcrystals.addon.utils;
 
 import io.github.itzispyder.clickcrystals.Global;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RespawnAnchorBlock;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RespawnAnchorBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class BlockUtils implements Global {
 
@@ -17,18 +16,18 @@ public class BlockUtils implements Global {
      * Finds the first BlockPos of the given block type within spherical render distance.
      */
     public static BlockPos findBlockPos(Block block) {
-        int chunkCount = mc.worldRenderer.getCompletedChunkCount();
+        int chunkCount = mc.levelRenderer.countRenderedSections();
         int radius = Math.min((int) Math.floor(Math.sqrt(chunkCount) * 16), 3000);
 
-        BlockPos playerPos = mc.player.getBlockPos();
+        BlockPos playerPos = mc.player.blockPosition();
 
         for (BlockPos pos : getBlocksInSphere(playerPos, radius)) {
-            if (mc.world.getBlockState(pos).getBlock() == block) {
+            if (mc.level.getBlockState(pos).getBlock() == block) {
                 return pos;
             }
         }
 
-        return BlockPos.ORIGIN;
+        return BlockPos.ZERO;
     }
 
     /**
@@ -47,7 +46,7 @@ public class BlockUtils implements Global {
                 while (y <= radius) {
                     double distSq = x * x + y * y + z * z;
                     if (distSq <= rSquared) {
-                        nextPos = center.add(x, y, z);
+                        nextPos = center.offset(x, y, z);
                         return true;
                     }
 
@@ -84,9 +83,9 @@ public class BlockUtils implements Global {
      * Checks if the player is looking directly at the given block type.
      */
     public static boolean isLookingAt(Block block) {
-        if (mc.crosshairTarget instanceof BlockHitResult hitResult) {
-            BlockState state = mc.world.getBlockState(hitResult.getBlockPos());
-            return state.isOf(block);
+        if (mc.hitResult instanceof BlockHitResult hitResult) {
+            BlockState state = mc.level.getBlockState(hitResult.getBlockPos());
+            return state.is(block);
         }
         return false;
     }
@@ -95,7 +94,7 @@ public class BlockUtils implements Global {
      * Checks if the player is looking at a Respawn Anchor with the exact charge count.
      */
     public static boolean isAnchorLoaded(int charges) {
-        if (!(mc.crosshairTarget instanceof BlockHitResult hit)) return false;
+        if (!(mc.hitResult instanceof BlockHitResult hit)) return false;
         return isAnchorLoaded(charges, hit.getBlockPos());
     }
 
@@ -103,8 +102,8 @@ public class BlockUtils implements Global {
      * Checks if the Respawn Anchor at the given position has the exact charge count.
      */
     public static boolean isAnchorLoaded(int charges, BlockPos pos) {
-        BlockState state = mc.world.getBlockState(pos);
+        BlockState state = mc.level.getBlockState(pos);
         return state.getBlock() == Blocks.RESPAWN_ANCHOR &&
-                state.get(RespawnAnchorBlock.CHARGES) == charges;
+                state.getValue(RespawnAnchorBlock.CHARGE) == charges;
     }
 }

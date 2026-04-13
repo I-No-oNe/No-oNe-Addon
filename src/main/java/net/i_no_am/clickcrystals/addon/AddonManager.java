@@ -65,7 +65,7 @@ public final class AddonManager implements ClientModInitializer, Global {
         system.println("-> loading profiles...");
         system.profiles.init();
         FileUtils.init();
-        system.printf("-> Checking if %s can use the addon...", mc.getSession().getUsername());
+        system.printf("-> Checking if %s can use the addon...", mc.getUser().getName());
         system.printf("<- Profile set '%s'", system.profiles.profileConfig.getCurrentProfileName());
         system.printf("-> Fetch addon data from: '%s'", Constants.URL.API);
         system.printf("-> User State: '%s'", Manager.banData.getBan());

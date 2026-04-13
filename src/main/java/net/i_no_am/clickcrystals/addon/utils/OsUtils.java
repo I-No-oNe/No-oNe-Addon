@@ -2,7 +2,6 @@ package net.i_no_am.clickcrystals.addon.utils;
 
 import io.github.itzispyder.clickcrystals.Global;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

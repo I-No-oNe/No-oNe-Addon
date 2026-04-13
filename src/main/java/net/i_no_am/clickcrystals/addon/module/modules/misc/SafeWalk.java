@@ -2,7 +2,10 @@ package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
+import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
+
+import java.util.Arrays;
 
 public class SafeWalk extends AddonModule {
     public SafeWalk() {
@@ -22,4 +25,8 @@ public class SafeWalk extends AddonModule {
             .def("")
             .build()
     );
+
+    public boolean isOn() {
+        return isEnabled() && (!itemCheck.getVal() || Arrays.stream(itemNames.getVal().toLowerCase().split(",")).map(String::trim).anyMatch(HotbarUtils::nameContains));
+    }
 }

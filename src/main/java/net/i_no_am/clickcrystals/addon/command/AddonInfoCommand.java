@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.itzispyder.clickcrystals.client.commands.Command;
 import net.i_no_am.clickcrystals.addon.client.Manager;
 import net.i_no_am.clickcrystals.addon.utils.OsUtils;
-import net.minecraft.command.CommandSource;
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 
 import java.util.stream.Collectors;
 
@@ -14,7 +14,7 @@ public class AddonInfoCommand extends Command {
     }
 
     @Override
-    public void build(LiteralArgumentBuilder<CommandSource> literalArgumentBuilder) {
+    public void build(LiteralArgumentBuilder<ClientSuggestionProvider> literalArgumentBuilder) {
         literalArgumentBuilder.executes(context -> {
             String moduleChart = Manager.modules.getAddonModule().stream()
                     .map(module -> String.format("| %s | %s |",

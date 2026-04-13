@@ -7,7 +7,7 @@
     "MixinCategories",
     "MixinClickCrystals",
     "MixinNetworkEventListener",
-    "MixinTextVisitFactory"
+    "MixinStringDecomposer"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -16,12 +16,12 @@
     "MixinChatScreen",
     "MixinDefaultBase",
     "MixinHomeScreen",
-    "MixinInGameHud",
-    "MixinKeyBinding",
+    "MixinGui",
+    "MixinKeyMapping",
     "MixinLivingEntityRenderer",
     "MixinOverlayTexture",
-    "MixinPlayerEntityRenderer",
-    "MixinPlayerInteractionManager",
+    "MixinAvatarRenderer",
+    "MixinMultiPlayerGameMode",
     "MixinTitleScreen"
   ]
 }

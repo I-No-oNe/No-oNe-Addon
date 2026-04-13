@@ -5,10 +5,10 @@ import io.github.itzispyder.clickcrystals.events.events.client.MouseClickEvent;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.PlayerInfo;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.EntityHitResult;
 import org.lwjgl.glfw.GLFW;
 
 public class MiddleClickPing extends AddonListenerModule {
@@ -19,14 +19,14 @@ public class MiddleClickPing extends AddonListenerModule {
     @EventHandler
     public void onMouseClick(MouseClickEvent e) {
 
-        if (e.getButton() != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.crosshairTarget == null || PlayerUtils.invalid()) return;
+        if (e.getButton() != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.hitResult == null || PlayerUtils.invalid()) return;
 
-        if (mc.crosshairTarget instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity targetPlayer) {
+        if (mc.hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof Player targetPlayer) {
 
-            PlayerListEntry entry = mc.getNetworkHandler().getPlayerListEntry(targetPlayer.getUuid());
+            PlayerInfo entry = mc.getConnection().getPlayerInfo(targetPlayer.getUUID());
 
-            if (entry != null) ChatUtils.sendPrefixMessage("Player " + Formatting.AQUA + targetPlayer.getName().getString() + Formatting.RESET + entry.getLatency() + " ms.");
-            else ChatUtils.sendPrefixMessage("Could not retrieve ping for player " + Formatting.AQUA + targetPlayer.getName().getString() + Formatting.RESET + ".");
+            if (entry != null) ChatUtils.sendPrefixMessage("Player " + ChatFormatting.AQUA + targetPlayer.getName().getString() + ChatFormatting.RESET + entry.getLatency() + " ms.");
+            else ChatUtils.sendPrefixMessage("Could not retrieve ping for player " + ChatFormatting.AQUA + targetPlayer.getName().getString() + ChatFormatting.RESET + ".");
         }
     }
 }

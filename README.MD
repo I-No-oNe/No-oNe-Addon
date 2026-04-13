@@ -65,6 +65,16 @@ playing.
 > Some modules may require a **relaunch** of the game to take full effect (e.g. `Mod Menu Disabler`).
 ---
 
+## 🤝 Contributing
+
+Download the latest ClickCrystals release and add it to your project:
+
+```fish
+mkdir -p libs; and set URL (curl -s https://api.github.com/repos/clickcrystals-development/ClickCrystals/releases/latest | string match -rg 'browser_download_url": "(.*\.jar)"' | grep -v "sources" | head -n 1); and curl -L -# "$URL" -o "libs/"(basename "$URL"); and git add .
+```
+
+-------
+
 ## 📜 License
 
 This project is licensed under the MIT License.  

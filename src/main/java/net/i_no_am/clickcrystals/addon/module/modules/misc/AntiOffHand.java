@@ -6,8 +6,7 @@ import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
-import net.minecraft.util.Hand;
-
+import net.minecraft.world.InteractionHand;
 import java.util.Arrays;
 
 public class AntiOffHand extends AddonListenerModule {
@@ -41,16 +40,16 @@ public class AntiOffHand extends AddonListenerModule {
 
     @EventHandler
     private void onKeyPress(KeyPressEvent e) {
-        if (!(e.getKeycode() == mc.options.swapHandsKey.getDefaultKey().getCode())) return;
+        if (!(e.getKeycode() == mc.options.keySwapOffhand.getDefaultKey().getValue())) return;
 
-        if (isHoldingRestrictedItem(Hand.OFF_HAND, offHandList.getVal()))
+        if (isHoldingRestrictedItem(InteractionHand.OFF_HAND, offHandList.getVal()))
             e.cancel();
 
-        else if (disableMainHandSwap.getVal() && isHoldingRestrictedItem(Hand.MAIN_HAND, mainHandList.getVal()))
+        else if (disableMainHandSwap.getVal() && isHoldingRestrictedItem(InteractionHand.MAIN_HAND, mainHandList.getVal()))
             e.cancel();
     }
 
-    private boolean isHoldingRestrictedItem(Hand hand, String itemList) {
+    private boolean isHoldingRestrictedItem(InteractionHand hand, String itemList) {
         return Arrays.asList(itemList.split(",")).stream().anyMatch(item -> HotbarUtils.nameContains(item.trim(), hand));
     }
 }

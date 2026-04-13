@@ -4,8 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.github.itzispyder.clickcrystals.client.commands.Command;
 import net.i_no_am.clickcrystals.addon.command.argument.LogFileArgumentType;
-import net.minecraft.command.CommandSource;
-
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,9 +20,9 @@ public class CleanCommand extends Command {
     }
 
     @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
+    public void build(LiteralArgumentBuilder<ClientSuggestionProvider> builder) {
         builder.then(literal("chat").executes(ctx -> {
-            mc.inGameHud.getChatHud().clear(true);
+            mc.gui.getChat().clearMessages(true);
             return SINGLE_SUCCESS;
         })).then(literal("logs").then(argument("content", StringArgumentType.string()).executes(ctx -> {
             String content = StringArgumentType.getString(ctx, "content");

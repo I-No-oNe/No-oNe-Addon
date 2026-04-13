@@ -5,9 +5,9 @@ import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
 import net.i_no_am.clickcrystals.addon.utils.BlockUtils;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 
 public class Prevent extends AddonModule {
     public Prevent() {
@@ -43,37 +43,37 @@ public class Prevent extends AddonModule {
             .build()
     );
 
-    public ActionResult cannotPlace() {
-        if (!isEnabled()) return ActionResult.SUCCESS;
+    public InteractionResult cannotPlace() {
+        if (!isEnabled()) return InteractionResult.SUCCESS;
 
         // Prevent placing a respawn anchor on another anchor
         if (disableDoubleAnchor.getVal()
                 && HotbarUtils.isHoldingEitherHand(Items.RESPAWN_ANCHOR)
                 && (BlockUtils.isLookingAt(Blocks.RESPAWN_ANCHOR) && !BlockUtils.isAnchorLoaded(1))) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         // Prevent placing a glowstone on another glowstone
         if (disableDoubleGlowstone.getVal()
                 && HotbarUtils.isHoldingEitherHand(Items.GLOWSTONE)
                 && BlockUtils.isLookingAt(Blocks.GLOWSTONE)) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         // Prevent placing a respawn anchor on glowstone
         if (disableAnchorOnGlowstone.getVal()
                 && HotbarUtils.isHoldingEitherHand(Items.RESPAWN_ANCHOR)
                 && BlockUtils.isLookingAt(Blocks.GLOWSTONE)) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
         // Prevent placing glowstone if not targeting anchor or anchor is loaded
         if (disableGlowstonePlacement.getVal()
                 && HotbarUtils.isHoldingEitherHand(Items.GLOWSTONE)
                 && (!BlockUtils.isLookingAt(Blocks.RESPAWN_ANCHOR) || BlockUtils.isAnchorLoaded(1))) {
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         }
 
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }
