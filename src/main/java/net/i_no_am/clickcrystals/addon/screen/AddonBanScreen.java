@@ -13,18 +13,27 @@ import net.minecraft.util.FormattedCharSequence;
 
 @SuppressWarnings("unused")
 public class AddonBanScreen extends GuiScreen {
-    public final int windowWidth = mc.getWindow().getGuiScaledWidth();
-    public final int windowHeight = mc.getWindow().getGuiScaledHeight();
+
     public final int baseWidth = 420;
     public final int baseHeight = 240;
-    public final int baseX = windowWidth / 2 - baseWidth / 2;
-    public final int baseY = windowHeight / 2 - baseHeight / 2;
 
     private final HyperLinkElement discordLink = new HyperLinkElement(0, 0, "https://discord.com/users/1051897115447660697", "https://discord.com/users/I-No-oNe", 1.0F);
 
     public AddonBanScreen() {
         super("addon-ban-screen");
         this.addChild(discordLink);
+    }
+
+    private int getBaseX() {
+        return mc.getWindow().getGuiScaledWidth() / 2 - baseWidth / 2;
+    }
+
+    private int getBaseY() {
+        return mc.getWindow().getGuiScaledHeight() / 2 - baseHeight / 2;
+    }
+
+    private int getCenterX() {
+        return getBaseX() + baseWidth / 2;
     }
 
     @Override
@@ -35,13 +44,14 @@ public class AddonBanScreen extends GuiScreen {
         this.extractBlurredBackground(graphicsExtractor);
         this.extractMenuBackground(graphicsExtractor);
 
-        int cX = baseX + baseWidth / 2;
-        int cY = baseY + baseHeight / 6;
+        int cX = getCenterX();
+        int cY = getBaseY() + baseHeight / 6;
         String text;
 
         text = StringUtils.color("&cYou Aren't In The Addon Whitelist");
         RenderUtils.drawDefaultCenteredScaledText(graphicsExtractor, Component.literal(text), cX, cY += 10, 1.0F, true);
         cY += 30;
+
         text = StringUtils.color("&cReason:\n&7%s\n&eHWID: &f&%s").formatted("§aThis Addon Is Private", " " + OsUtils.getHWID());
         var lines = mc.font.split(FormattedText.of(text), baseWidth);
         for (FormattedCharSequence line : lines) {
@@ -53,7 +63,19 @@ public class AddonBanScreen extends GuiScreen {
         text = StringUtils.color("&cDM I-No-oNe For Access");
         RenderUtils.drawDefaultCenteredScaledText(graphicsExtractor, Component.literal(text), cX, cY += 10, 1.0F, true);
         cY += 10;
+
         discordLink.x = cX - discordLink.width / 2;
         discordLink.y = cY + 10;
+    }
+
+    @Override
+    protected void repositionElements() {
+        // intentionally empty — layout is handled dynamically in baseRender()
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 }

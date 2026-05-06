@@ -4,7 +4,7 @@ public class ClassUtils {
 
     public static boolean isClassLoaded(String className) {
         try {
-            ClassLoader.getSystemClassLoader().loadClass(className);
+            Class.forName(className, false, ClassUtils.class.getClassLoader());
             return true;
         } catch (ClassNotFoundException | LinkageError | SecurityException e) {
             return false;

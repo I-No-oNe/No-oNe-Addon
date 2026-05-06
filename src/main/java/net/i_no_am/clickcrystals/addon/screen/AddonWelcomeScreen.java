@@ -14,12 +14,8 @@ import java.util.List;
 public class AddonWelcomeScreen extends GuiScreen {
 
     public static boolean isClosed;
-    public final int windowWidth = mc.getWindow().getGuiScaledWidth();
-    public final int windowHeight = mc.getWindow().getGuiScaledHeight();
     public final int baseWidth = 420;
     public final int baseHeight = 240;
-    public final int baseX = windowWidth / 2 - baseWidth / 2;
-    public final int baseY = windowHeight / 2 - baseHeight / 2;
 
     private final ButtonElement websiteButton = new ButtonElement(
             "Visit Addon Website",
@@ -39,14 +35,26 @@ public class AddonWelcomeScreen extends GuiScreen {
         this.addChild(closeButton);
     }
 
+    private int getBaseX() {
+        return mc.getWindow().getGuiScaledWidth() / 2 - baseWidth / 2;
+    }
+
+    private int getBaseY() {
+        return mc.getWindow().getGuiScaledHeight() / 2 - baseHeight / 2;
+    }
+
+    private int getCenterX() {
+        return getBaseX() + baseWidth / 2;
+    }
+
     @Override
     public void baseRender(GuiGraphicsExtractor graphicsExtractor, int mouseX, int mouseY, float delta) {
         this.extractPanorama(graphicsExtractor, delta);
         this.extractBlurredBackground(graphicsExtractor);
         this.extractMenuBackground(graphicsExtractor);
 
-        int cX = baseX + baseWidth / 2;
-        int cY = baseY + 40;
+        int cX = getCenterX();
+        int cY = getBaseY() + 40;
 
         String text = StringUtils.color("&aWelcome to No oNe's Addon!");
         RenderUtils.drawDefaultCenteredScaledText(graphicsExtractor, Component.literal(text), cX, cY, 1.2F, true);
@@ -66,17 +74,26 @@ public class AddonWelcomeScreen extends GuiScreen {
             cY += 15;
         }
 
-        // Place buttons
-        int btnSpacing = 35;
         websiteButton.x = cX - websiteButton.width / 2;
         websiteButton.y = cY + 30;
 
         closeButton.x = cX - closeButton.width / 2;
-        closeButton.y = websiteButton.y + btnSpacing;
+        closeButton.y = websiteButton.y + 35;
     }
 
     public void setClose() {
         isClosed = true;
         mc.setScreen(null);
+    }
+
+    @Override
+    protected void repositionElements() {
+        // intentionally empty — layout is handled dynamically in baseRender()
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 }
