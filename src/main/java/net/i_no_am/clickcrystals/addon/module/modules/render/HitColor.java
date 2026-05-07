@@ -22,8 +22,8 @@ public class HitColor extends AddonListenerModule {
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ModuleSetting<Color> color = scGeneral.add(createColorSetting()
-            .name("glow-color-setting")
-            .description("Set the color of the glowing effect")
+            .name("hit-color-setting")
+            .description("Set the color of the hit color")
             .def(0xFF00FFFF)
             .build());
 
