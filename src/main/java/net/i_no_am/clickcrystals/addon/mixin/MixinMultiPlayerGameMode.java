@@ -2,7 +2,7 @@ package net.i_no_am.clickcrystals.addon.mixin;
 
 import io.github.itzispyder.clickcrystals.modules.Module;
 import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
-import net.i_no_am.clickcrystals.addon.module.modules.pvp.Prevent;
+import net.i_no_am.clickcrystals.addon.module.modules.pvp.NoMisplace;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +18,7 @@ public class MixinMultiPlayerGameMode {
 
     @Inject(method = "useItemOn", cancellable = true, at = @At("HEAD"))
     private void onInteractBlock(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
-        Prevent p = Module.get(Prevent.class);
+        NoMisplace p = Module.get(NoMisplace.class);
         if (!p.isEnabled() || PlayerUtils.invalid()) return;
         InteractionResult result = p.cannotPlace();
         if (result == InteractionResult.FAIL) cir.setReturnValue(InteractionResult.FAIL);

@@ -9,36 +9,36 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
-public class Prevent extends AddonModule {
-    public Prevent() {
-        super("prevent", "Blocks accidental glowstone or anchor placements");
+public class NoMisplace extends AddonModule {
+    public NoMisplace() {
+        super("no-misplace", "Blocks the glowstone and anchor placements that waste an anchor");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
 
     public final ModuleSetting<Boolean> disableGlowstonePlacement = scGeneral.add(createBoolSetting()
-            .name("disable-placing-glowstone")
-            .description("Disable placing glowstone unless targeting a respawn anchor.")
+            .name("no-loose-glowstone")
+            .description("Only place glowstone into an unloaded respawn anchor.")
             .def(true)
             .build()
     );
 
     public final ModuleSetting<Boolean> disableAnchorOnGlowstone = scGeneral.add(createBoolSetting()
-            .name("disable-placing-anchor-on-glowstone")
-            .description("Disable placing a respawn anchor on glowstone.")
+            .name("no-anchor-on-glowstone")
+            .description("Never place a respawn anchor against glowstone.")
             .def(true)
             .build()
     );
 
     public final ModuleSetting<Boolean> disableDoubleAnchor = scGeneral.add(createBoolSetting()
-            .name("disable-placing-anchor-on-anchor")
-            .description("Disable placing a respawn anchor on top of another anchor.")
+            .name("no-anchor-on-anchor")
+            .description("Never place a respawn anchor against another anchor.")
             .def(true)
             .build()
     );
     public final ModuleSetting<Boolean> disableDoubleGlowstone = scGeneral.add(createBoolSetting()
-            .name("disable-placing-glowstone-on-glowstone")
-            .description("Disable placing glowstone unless not targeting another glowstone.")
+            .name("no-glowstone-on-glowstone")
+            .description("Never place glowstone against other glowstone.")
             .def(false)
             .build()
     );

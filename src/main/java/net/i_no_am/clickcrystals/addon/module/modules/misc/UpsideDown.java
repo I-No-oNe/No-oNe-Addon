@@ -11,13 +11,13 @@ import net.minecraft.world.entity.player.Player;
 
 public class UpsideDown extends AddonListenerModule {
     public UpsideDown() {
-        super("upside-down", "Renders all players and entities upside down");
+        super("upside-down", "Flips the entities around you upside down");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ModuleSetting<IgnoreType> ignoreType = scGeneral.add(createEnumSetting(IgnoreType.class)
-            .name("ignore-type")
-            .description("Make it so the selected entity won't be affected by this module")
+            .name("ignore")
+            .description("Which entities stay the right way up.")
             .def(IgnoreType.NONE)
             .build()
     );

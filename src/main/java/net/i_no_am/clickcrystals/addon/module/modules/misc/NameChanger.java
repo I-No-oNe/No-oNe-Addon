@@ -6,13 +6,13 @@ import net.i_no_am.clickcrystals.addon.module.AddonModule;
 
 public class NameChanger extends AddonModule {
     public NameChanger() {
-        super("name-changer", "Changes the displayed name of the player (client-side only)");
+        super("name-changer", "Replaces your name with another one everywhere the client draws it");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ModuleSetting<String> fakeName = scGeneral.add(createStringSetting()
-            .name("player-name")
-            .description("A name that your real name will be replaced with")
+            .name("fake-name")
+            .description("Name shown in place of your own.")
             .def("Steve1")
             .build()
     );

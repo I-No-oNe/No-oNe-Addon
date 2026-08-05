@@ -13,28 +13,28 @@ import net.minecraft.world.item.Items;
 public class AntiOffHand extends AddonListenerModule {
 
     public AntiOffHand() {
-        super("anti-off-hand", "Prevents off-hand swapping under specific conditions");
+        super("anti-off-hand", "Blocks the off-hand swap key while you are holding items you cannot afford to move");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
 
     public final ItemListSetting offHandList = scGeneral.add(createItemListSetting()
-            .name("off-hand-item-list")
-            .description("List of items that prevent off-hand swap.")
+            .name("off-hand-items")
+            .description("Holding one of these in the off-hand blocks the swap.")
             .def(Items.TOTEM_OF_UNDYING)
             .build()
     );
 
     public final ModuleSetting<Boolean> disableMainHandSwap = scGeneral.add(createBoolSetting()
             .name("disable-main-hand-swap")
-            .description("If enabled, swapping items from the main hand to the off-hand will be blocked if holding restricted items.")
+            .description("Also block the swap based on what the main hand is holding.")
             .def(false)
             .build()
     );
 
     public final ItemListSetting mainHandList = scGeneral.add(createItemListSetting()
-            .name("main-hand-item-list")
-            .description("List of items that prevent main-hand swap.")
+            .name("main-hand-items")
+            .description("Holding one of these in the main hand blocks the swap.")
             .def(Items.END_CRYSTAL, Items.ENDER_PEARL, Items.ELYTRA, Items.NETHERITE_SWORD, Items.DIAMOND_SWORD)
             .visibleWhen(disableMainHandSwap::getVal)
             .build()
@@ -44,14 +44,10 @@ public class AntiOffHand extends AddonListenerModule {
     private void onKeyPress(KeyPressEvent e) {
         if (!(e.getKeycode() == mc.options.keySwapOffhand.getDefaultKey().getValue())) return;
 
-        if (isHoldingRestrictedItem(InteractionHand.OFF_HAND, offHandList))
+        if (offHandList.matches(HotbarUtils.getHand(InteractionHand.OFF_HAND)))
             e.cancel();
 
-        else if (disableMainHandSwap.getVal() && isHoldingRestrictedItem(InteractionHand.MAIN_HAND, mainHandList))
+        else if (disableMainHandSwap.getVal() && mainHandList.matches(HotbarUtils.getHand(InteractionHand.MAIN_HAND)))
             e.cancel();
-    }
-
-    private boolean isHoldingRestrictedItem(InteractionHand hand, ItemListSetting itemList) {
-        return itemList.matches(HotbarUtils.getHand(hand));
     }
 }

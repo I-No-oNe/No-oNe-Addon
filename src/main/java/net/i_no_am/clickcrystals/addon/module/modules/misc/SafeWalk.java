@@ -8,19 +8,19 @@ import net.i_no_am.clickcrystals.addon.module.AddonModule;
 
 public class SafeWalk extends AddonModule {
     public SafeWalk() {
-        super("safe-walk", "Automatically sneaks at the edge of blocks");
+        super("safe-walk", "Holds you back at block edges the way sneaking does");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ModuleSetting<Boolean> itemCheck = scGeneral.add(createBoolSetting()
-            .name("check-item-name")
-            .description("If holding the requited item the module will work.")
+            .name("only-while-holding")
+            .description("Only hold you back while a chosen item is in hand.")
             .def(false)
             .build()
     );
     public final ItemListSetting itemNames = scGeneral.add(createItemListSetting()
-            .name("items-to-check")
-            .description("Write down here the names of the items")
+            .name("required-items")
+            .description("Items that switch the module on while held.")
             .def("")
             .visibleWhen(itemCheck::getVal)
             .build()

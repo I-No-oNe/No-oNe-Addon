@@ -16,13 +16,13 @@ import java.io.IOException;
 public class ModMenuDisabler extends AddonModule {
 
     public ModMenuDisabler() {
-        super("mod-menu-disabler", "Hides ClickCrystals from mod menu, REQUIRES RESTART");
+        super("mod-menu-disabler", "Hides chosen mods from Mod Menu, applied on the next launch");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ListSetting modIdNames = scGeneral.add(createListSetting()
-            .name("mods-id's")
-            .description("Mod IDs that you want to hide.")
+            .name("mod-ids")
+            .description("Mod ids to keep out of the Mod Menu list.")
             .def(Constants.VARS.MOD_ID, modId)
             .build()
     );

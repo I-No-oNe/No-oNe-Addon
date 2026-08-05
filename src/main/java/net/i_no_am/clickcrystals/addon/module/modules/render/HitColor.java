@@ -17,13 +17,13 @@ import java.awt.*;
 
 public class HitColor extends AddonListenerModule {
     public HitColor() {
-        super("hit-color", "Changes the hit flash color of entities");
+        super("hit-color", "Recolors the flash an entity shows when it takes a hit");
     }
 
     private final SettingSection scGeneral = getGeneralSection();
     public final ModuleSetting<Color> color = scGeneral.add(createColorSetting()
-            .name("hit-color-setting")
-            .description("Set the color of the hit color")
+            .name("flash-color")
+            .description("Color the hit flash is tinted with.")
             .def(0xFF00FFFF)
             .build());
 

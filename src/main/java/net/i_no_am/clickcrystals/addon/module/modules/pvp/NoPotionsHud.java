@@ -6,7 +6,7 @@ import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 
 public class NoPotionsHud extends AddonListenerModule {
     public NoPotionsHud() {
-        super("no-potions-render", "Hides potion effects from the Potion HUD");
+        super("no-potion-hud", "Hides the potion effect icons in the corner of the screen");
     }
 
     @EventHandler

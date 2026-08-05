@@ -13,7 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class MiddleClickPing extends AddonListenerModule {
     public MiddleClickPing() {
-        super("middle-click-ping", "Pings a player in chat when you middle-click on them");
+        super("middle-click-ping", "Middle-click a player to read their ping out in chat");
     }
 
     @EventHandler

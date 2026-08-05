@@ -14,7 +14,7 @@ import net.i_no_am.clickcrystals.addon.module.modules.misc.*;
 import net.i_no_am.clickcrystals.addon.module.modules.pvp.LootKeeper;
 import net.i_no_am.clickcrystals.addon.module.modules.pvp.MiddleClickPing;
 import net.i_no_am.clickcrystals.addon.module.modules.pvp.NoPotionsHud;
-import net.i_no_am.clickcrystals.addon.module.modules.pvp.Prevent;
+import net.i_no_am.clickcrystals.addon.module.modules.pvp.NoMisplace;
 import net.i_no_am.clickcrystals.addon.module.modules.render.HitColor;
 import net.i_no_am.clickcrystals.addon.utils.ClassUtils;
 import net.i_no_am.clickcrystals.addon.utils.FileUtils;
@@ -43,7 +43,7 @@ public final class AddonManager implements ClientModInitializer, Global {
         system.addModule(new HitColor());
         system.addModule(new DMSpammer());
         system.addModule(new UpsideDown());
-        system.addModule(new Prevent());
+        system.addModule(new NoMisplace());
         system.addModule(new AntiOffHand());
         system.addModule(new GhostInteractions());
         system.addModule(new SafeWalk());
