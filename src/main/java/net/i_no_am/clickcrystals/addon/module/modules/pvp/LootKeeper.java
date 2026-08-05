@@ -4,6 +4,7 @@ import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.events.events.world.ClientTickEndEvent;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.keybinds.Keybind;
+import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.KeybindSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
@@ -12,11 +13,9 @@ import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Items;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 
 public class LootKeeper extends AddonListenerModule {
 
@@ -29,10 +28,11 @@ public class LootKeeper extends AddonListenerModule {
     private static final long THROW_DELAY_MS = 100;
 
     private final SettingSection scGeneral = getGeneralSection();
-    public final ModuleSetting<String> listItem = scGeneral.add(createStringSetting()
+    public final ItemListSetting listItem = scGeneral.add(createItemListSetting()
             .name("list-of-items-to-not-throw")
-            .description("Which items the module won't throw, separated by commas:")
-            .def("diamond,netherite,crystals,totem,pearl,sword,elytra,rockets")
+            .description("Which items the module won't throw:")
+            .def(Items.DIAMOND, Items.NETHERITE_INGOT, Items.END_CRYSTAL, Items.TOTEM_OF_UNDYING,
+                    Items.ENDER_PEARL, Items.NETHERITE_SWORD, Items.ELYTRA, Items.FIREWORK_ROCKET)
             .build()
     );
 
@@ -49,32 +49,19 @@ public class LootKeeper extends AddonListenerModule {
             .build()
     );
 
-    private List<String> cachedKeepList = null;
-    private String lastRawKeepList = "";
-
     @EventHandler
     private void onTick(ClientTickEndEvent e) {
         if (PlayerUtils.invalid() || !isToggle) return;
-
-        String rawKeepList = listItem.getVal();
-
-        if (!rawKeepList.equals(lastRawKeepList)) {
-            cachedKeepList = Arrays.stream(rawKeepList.split(","))
-                    .map(String::trim)
-                    .map(s -> s.toLowerCase(Locale.ROOT))
-                    .toList();
-            lastRawKeepList = rawKeepList;
-        }
 
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastThrowTime < THROW_DELAY_MS) return;
 
 
-        boolean shouldKeep = cachedKeepList.stream().anyMatch(HotbarUtils::nameContains);
+        boolean shouldKeep = listItem.matches(HotbarUtils.getHand());
 
         if (!shouldKeep) {
             // Select the slot with unwanted item
-            HotbarUtils.search(i -> cachedKeepList.contains(i.getItem().getDescriptionId()));
+            HotbarUtils.search(i -> !listItem.matches(i));
 
             // Drop the item (true = drop entire stack)
             PlayerUtils.player().drop(true);

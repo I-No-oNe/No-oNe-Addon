@@ -3,11 +3,12 @@ package net.i_no_am.clickcrystals.addon.module.modules.misc;
 import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.events.events.client.KeyPressEvent;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
+import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.minecraft.world.InteractionHand;
-import java.util.Arrays;
+import net.minecraft.world.item.Items;
 
 public class AntiOffHand extends AddonListenerModule {
 
@@ -17,10 +18,10 @@ public class AntiOffHand extends AddonListenerModule {
 
     private final SettingSection scGeneral = getGeneralSection();
 
-    public final ModuleSetting<String> offHandList = scGeneral.add(createStringSetting()
+    public final ItemListSetting offHandList = scGeneral.add(createItemListSetting()
             .name("off-hand-item-list")
             .description("List of items that prevent off-hand swap.")
-            .def("totem")
+            .def(Items.TOTEM_OF_UNDYING)
             .build()
     );
 
@@ -31,10 +32,10 @@ public class AntiOffHand extends AddonListenerModule {
             .build()
     );
 
-    public final ModuleSetting<String> mainHandList = scGeneral.add(createStringSetting()
+    public final ItemListSetting mainHandList = scGeneral.add(createItemListSetting()
             .name("main-hand-item-list")
             .description("List of items that prevent main-hand swap.")
-            .def("crystal,pearl,elytra,armor,sword")
+            .def(Items.END_CRYSTAL, Items.ENDER_PEARL, Items.ELYTRA, Items.NETHERITE_SWORD, Items.DIAMOND_SWORD)
             .visibleWhen(disableMainHandSwap::getVal)
             .build()
     );
@@ -43,14 +44,14 @@ public class AntiOffHand extends AddonListenerModule {
     private void onKeyPress(KeyPressEvent e) {
         if (!(e.getKeycode() == mc.options.keySwapOffhand.getDefaultKey().getValue())) return;
 
-        if (isHoldingRestrictedItem(InteractionHand.OFF_HAND, offHandList.getVal()))
+        if (isHoldingRestrictedItem(InteractionHand.OFF_HAND, offHandList))
             e.cancel();
 
-        else if (disableMainHandSwap.getVal() && isHoldingRestrictedItem(InteractionHand.MAIN_HAND, mainHandList.getVal()))
+        else if (disableMainHandSwap.getVal() && isHoldingRestrictedItem(InteractionHand.MAIN_HAND, mainHandList))
             e.cancel();
     }
 
-    private boolean isHoldingRestrictedItem(InteractionHand hand, String itemList) {
-        return Arrays.asList(itemList.split(",")).stream().anyMatch(item -> HotbarUtils.nameContains(item.trim(), hand));
+    private boolean isHoldingRestrictedItem(InteractionHand hand, ItemListSetting itemList) {
+        return itemList.matches(HotbarUtils.getHand(hand));
     }
 }

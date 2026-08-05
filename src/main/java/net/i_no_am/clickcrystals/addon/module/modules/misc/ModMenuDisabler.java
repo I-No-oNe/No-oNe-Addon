@@ -1,7 +1,7 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
 import com.google.gson.*;
-import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
+import io.github.itzispyder.clickcrystals.modules.settings.ListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.FileValidationUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
@@ -20,14 +20,13 @@ public class ModMenuDisabler extends AddonModule {
     }
 
     private final SettingSection scGeneral = getGeneralSection();
-    public final ModuleSetting<String> modIdNames = scGeneral.add(createStringSetting()
+    public final ListSetting modIdNames = scGeneral.add(createListSetting()
             .name("mods-id's")
-            .description("Comma-separated list of mod IDs that you want to hide.")
-            .def(Constants.VARS.MOD_ID + "," + modId)
+            .description("Mod IDs that you want to hide.")
+            .def(Constants.VARS.MOD_ID, modId)
             .build()
     );
 
-    String[] IDS = modIdNames.getVal().split(",");
     File MOD_MENU_CONFIG = FabricLoader.getInstance().getConfigDir().resolve("modmenu.json").toFile();
 
 
@@ -38,8 +37,6 @@ public class ModMenuDisabler extends AddonModule {
             if (mc.player != null) ChatUtils.sendWarningMessage("ModMenu is not installed, cannot hide ClickCrystals from mod menu.");
             return;
         }
-
-        if (IDS == null) return;
 
         if (!FileValidationUtils.validate(MOD_MENU_CONFIG)) {
             JsonObject newConfig = new JsonObject();
@@ -61,7 +58,7 @@ public class ModMenuDisabler extends AddonModule {
                 NEW_MOD_MENU_CONFIG.add("hidden_mods", hiddenMods);
             }
 
-            for (String modId : IDS) {
+            for (String modId : modIdNames.getEntries()) {
                 addModToHiddenMods(hiddenMods, modId.trim());
             }
 
