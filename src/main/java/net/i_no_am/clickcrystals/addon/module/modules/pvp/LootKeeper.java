@@ -6,7 +6,6 @@ import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.keybinds.Keybind;
 import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.KeybindSetting;
-import io.github.itzispyder.clickcrystals.modules.settings.ListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
@@ -33,16 +32,8 @@ public class LootKeeper extends AddonListenerModule {
 
     public final ModuleSetting<Boolean> keepByKeyword = scGeneral.add(createBoolSetting()
             .name("keep-by-keyword")
-            .description("Keep anything whose name contains one of your keywords, instead of naming every item.")
+            .description("Read the list below as keywords instead of exact items, so \"sword\" keeps every sword.")
             .def(false)
-            .build()
-    );
-
-    public final ListSetting keywords = scGeneral.add(createListSetting()
-            .name("keywords-to-keep")
-            .description("Words an item's name has to contain to be kept, so \"sword\" keeps every sword.")
-            .def("sword", "pickaxe", "totem", "crystal", "pearl")
-            .visibleWhen(keepByKeyword::getVal)
             .build()
     );
 
@@ -51,7 +42,7 @@ public class LootKeeper extends AddonListenerModule {
             .description("Items that are never thrown. Everything else in the hotbar goes.")
             .def(Items.DIAMOND, Items.NETHERITE_INGOT, Items.END_CRYSTAL, Items.TOTEM_OF_UNDYING,
                     Items.ENDER_PEARL, Items.NETHERITE_SWORD, Items.ELYTRA, Items.FIREWORK_ROCKET)
-            .visibleWhen(() -> !keepByKeyword.getVal())
+            .literalWhen(keepByKeyword::getVal)
             .build()
     );
 
@@ -69,8 +60,8 @@ public class LootKeeper extends AddonListenerModule {
     );
 
     /**
-     * Keyword mode takes over the item list entirely, matching anything whose name contains
-     * a keyword, so one word covers a whole family of items.
+     * Keyword mode reads the same list as plain words, so an entry like "sword" covers every
+     * sword instead of the one item it names.
      */
     private boolean shouldKeep(ItemStack stack) {
         if (!keepByKeyword.getVal())
@@ -79,7 +70,7 @@ public class LootKeeper extends AddonListenerModule {
             return false;
 
         String id = ItemListSetting.idOf(stack.getItem());
-        return keywords.getEntries().stream().anyMatch(word -> id.contains(word.trim().toLowerCase().replace(' ', '_')));
+        return listItem.getRawItems().stream().anyMatch(word -> id.contains(word.trim().toLowerCase().replace(' ', '_')));
     }
 
     @EventHandler
