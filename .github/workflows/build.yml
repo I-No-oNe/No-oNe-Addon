@@ -44,7 +44,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
-          tag_name: "latest"
+          tag_name: "${{ steps.modmeta.outputs.version }}"
           prerelease: false
           name: "Latest Build (${{ steps.modmeta.outputs.version }})"
           files: ./build/libs/*.jar
