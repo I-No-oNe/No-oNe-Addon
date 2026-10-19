@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://clickcrystals.xyz",
-		"sources": "https://github.com/clickcrystals-development/Cape-Disabler-Addon"
+		"sources": "https://github.com/I-No-oNe/No-oNe-Addon"
 	},
 	"license": "MIT",
 	"icon": "assets/no-one-addon/icon.png",
@@ -23,13 +23,13 @@
 		"no-one-addon.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.17.3",
-		"minecraft": ">=1.21.10",
-		"java": ">=21",
+		"fabricloader": ">=0.19.3",
+		"minecraft": ">=26.2",
+		"java": ">=25",
 		"fabric-api": "*",
-		"clickcrystals": "*"
+		"clickcrystals": ">=1.4.1"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"clickcrystals-additional": "*"
 	}
 }

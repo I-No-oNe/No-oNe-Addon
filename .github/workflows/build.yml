@@ -7,13 +7,14 @@ on:
     branches: [ "main" ]
 
 concurrency:
-  group: "latest"
+  group: "${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
@@ -35,11 +36,15 @@ jobs:
       - name: Remove *-sources.jar
         run: rm -f ./build/libs/*-sources.jar || true
 
+      - name: Read mod version for the release name
+        id: modmeta
+        run: echo "version=$(grep '^mod_version=' gradle.properties | cut -d= -f2)" >> "$GITHUB_OUTPUT"
+
       - name: Create automatic release
         uses: softprops/action-gh-release@v2
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: "latest"
           prerelease: false
-          name: "Latest Build (26.1)"
+          name: "Latest Build (${{ steps.modmeta.outputs.version }})"
           files: ./build/libs/*.jar
