@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 25
         uses: actions/setup-java@v4
@@ -40,11 +42,30 @@ jobs:
         id: modmeta
         run: echo "version=$(grep '^mod_version=' gradle.properties | cut -d= -f2)" >> "$GITHUB_OUTPUT"
 
+      - name: Build changelog since the previous tagged release
+        id: changelog
+        run: |
+          VERSION="${{ steps.modmeta.outputs.version }}"
+          PREV=$(git tag --sort=-creatordate | grep -v "^${VERSION}$" | head -1)
+          if [ -n "$PREV" ]; then
+            {
+              echo "body<<NOTE"
+              echo "Changes since ${PREV}:"
+              git log --no-merges --pretty=format:"- %s" "${PREV}..HEAD"
+              echo ""
+              echo "**Full changelog:** https://github.com/${GITHUB_REPOSITORY}/compare/${PREV}...${VERSION}"
+              echo "NOTE"
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "body=First tagged build of ${VERSION}." >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create automatic release
         uses: softprops/action-gh-release@v2
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           tag_name: "${{ steps.modmeta.outputs.version }}"
           prerelease: false
+          body: "${{ steps.changelog.outputs.body }}"
           name: "Latest Build (${{ steps.modmeta.outputs.version }})"
           files: ./build/libs/*.jar
