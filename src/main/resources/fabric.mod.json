@@ -23,11 +23,11 @@
 		"no-one-addon.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.19.3",
-		"minecraft": ">=26.2",
+		"fabricloader": ">=0.19.5",
+		"minecraft": ">=26.3",
 		"java": ">=25",
 		"fabric-api": "*",
-		"clickcrystals": ">=1.4.1"
+		"clickcrystals": ">=1.4.3"
 	},
 	"suggests": {
 		"clickcrystals-additional": "*"

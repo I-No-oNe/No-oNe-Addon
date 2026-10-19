@@ -13,9 +13,11 @@ import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.InteractionHand;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.Items;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.util.Prediction;
 
 
 public class LootKeeper extends AddonListenerModule {
@@ -50,7 +52,7 @@ public class LootKeeper extends AddonListenerModule {
     public final ModuleSetting<Keybind> activateModule = scGeneral.add(KeybindSetting.create()
             .name("throw-bind")
             .description("Starts and stops the throwing.")
-            .def(GLFW.GLFW_KEY_G)
+            .def(InputConstants.KEY_G)
             .onPress(keybind -> {
                 isToggle = !isToggle;
                 ChatUtils.sendPrefixMessage("LootKeeper module is " + (isToggle ? ChatFormatting.AQUA + "ON" : ChatFormatting.RED + "OFF") + ChatFormatting.RESET);
@@ -85,11 +87,11 @@ public class LootKeeper extends AddonListenerModule {
             // Select the slot with unwanted item
             HotbarUtils.search(i -> !shouldKeep(i));
 
-            // Drop the item (true = drop entire stack)
-            PlayerUtils.player().drop(true);
+            // Drop the item (true = drop entire stack, false = with physics throw)
+            PlayerUtils.player().drop(PlayerUtils.player().getMainHandItem(), true, Prediction.PREDICTED);
 
             // Swing hand for animation
-            PlayerUtils.player().swing(InteractionHand.MAIN_HAND);
+            PlayerUtils.player().swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
 
             lastThrowTime = currentTime;
         }

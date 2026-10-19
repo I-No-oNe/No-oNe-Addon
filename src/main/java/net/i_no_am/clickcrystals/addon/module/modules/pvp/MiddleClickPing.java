@@ -8,8 +8,8 @@ import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.world.entity.player.Player;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.world.phys.EntityHitResult;
-import org.lwjgl.glfw.GLFW;
 
 public class MiddleClickPing extends AddonListenerModule {
     public MiddleClickPing() {
@@ -19,7 +19,7 @@ public class MiddleClickPing extends AddonListenerModule {
     @EventHandler
     public void onMouseClick(MouseClickEvent e) {
 
-        if (e.getButton() != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.hitResult == null || PlayerUtils.invalid()) return;
+        if (e.getButton() != InputConstants.MOUSE_BUTTON_MIDDLE || mc.hitResult == null || PlayerUtils.invalid()) return;
 
         if (mc.hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof Player targetPlayer) {
 
