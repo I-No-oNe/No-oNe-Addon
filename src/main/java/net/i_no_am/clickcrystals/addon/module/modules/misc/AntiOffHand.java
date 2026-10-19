@@ -3,10 +3,10 @@ package net.i_no_am.clickcrystals.addon.module.modules.misc;
 import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.events.events.client.KeyPressEvent;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
-import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
+import net.i_no_am.clickcrystals.addon.setting.ItemListSetting;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;
 
@@ -18,7 +18,7 @@ public class AntiOffHand extends AddonListenerModule {
 
     private final SettingSection scGeneral = getGeneralSection();
 
-    public final ItemListSetting offHandList = scGeneral.add(createItemListSetting()
+    public final ItemListSetting offHandList = scGeneral.add(ItemListSetting.builder()
             .name("off-hand-items")
             .description("Holding one of these in the off-hand blocks the swap.")
             .def(Items.TOTEM_OF_UNDYING)
@@ -32,7 +32,7 @@ public class AntiOffHand extends AddonListenerModule {
             .build()
     );
 
-    public final ItemListSetting mainHandList = scGeneral.add(createItemListSetting()
+    public final ItemListSetting mainHandList = scGeneral.add(ItemListSetting.builder()
             .name("main-hand-items")
             .description("Holding one of these in the main hand blocks the swap.")
             .def(Items.END_CRYSTAL, Items.ENDER_PEARL, Items.ELYTRA, Items.NETHERITE_SWORD, Items.DIAMOND_SWORD)

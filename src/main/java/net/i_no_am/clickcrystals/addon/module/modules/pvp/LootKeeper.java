@@ -4,13 +4,13 @@ import io.github.itzispyder.clickcrystals.events.EventHandler;
 import io.github.itzispyder.clickcrystals.events.events.world.ClientTickEndEvent;
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
 import io.github.itzispyder.clickcrystals.modules.keybinds.Keybind;
-import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.KeybindSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.PlayerUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonListenerModule;
+import net.i_no_am.clickcrystals.addon.setting.ItemListSetting;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.InteractionHand;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -39,12 +39,11 @@ public class LootKeeper extends AddonListenerModule {
             .build()
     );
 
-    public final ItemListSetting listItem = scGeneral.add(createItemListSetting()
+    public final ItemListSetting listItem = scGeneral.add(ItemListSetting.builder()
             .name("items-to-keep")
             .description("Items that are never thrown. Everything else in the hotbar goes.")
             .def(Items.DIAMOND, Items.NETHERITE_INGOT, Items.END_CRYSTAL, Items.TOTEM_OF_UNDYING,
                     Items.ENDER_PEARL, Items.NETHERITE_SWORD, Items.ELYTRA, Items.FIREWORK_ROCKET)
-            .literalWhen(keepByKeyword::getVal)
             .build()
     );
 

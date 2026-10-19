@@ -1,13 +1,13 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
 import com.google.gson.*;
-import io.github.itzispyder.clickcrystals.modules.settings.ListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.FileValidationUtils;
 import io.github.itzispyder.clickcrystals.util.minecraft.ChatUtils;
 import net.fabricmc.loader.api.FabricLoader;
 import net.i_no_am.clickcrystals.addon.client.data.Constants;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
+import net.i_no_am.clickcrystals.addon.setting.TextListSetting;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +20,7 @@ public class ModMenuDisabler extends AddonModule {
     }
 
     private final SettingSection scGeneral = getGeneralSection();
-    public final ListSetting modIdNames = scGeneral.add(createListSetting()
+    public final TextListSetting modIdNames = scGeneral.add(TextListSetting.builder()
             .name("mod-ids")
             .description("Mod ids to keep out of the Mod Menu list.")
             .def(Constants.VARS.MOD_ID, modId)

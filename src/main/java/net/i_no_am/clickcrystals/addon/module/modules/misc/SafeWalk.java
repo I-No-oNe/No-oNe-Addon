@@ -1,10 +1,10 @@
 package net.i_no_am.clickcrystals.addon.module.modules.misc;
 
 import io.github.itzispyder.clickcrystals.modules.ModuleSetting;
-import io.github.itzispyder.clickcrystals.modules.settings.ItemListSetting;
 import io.github.itzispyder.clickcrystals.modules.settings.SettingSection;
 import io.github.itzispyder.clickcrystals.util.minecraft.HotbarUtils;
 import net.i_no_am.clickcrystals.addon.module.AddonModule;
+import net.i_no_am.clickcrystals.addon.setting.ItemListSetting;
 
 public class SafeWalk extends AddonModule {
     public SafeWalk() {
@@ -18,7 +18,7 @@ public class SafeWalk extends AddonModule {
             .def(false)
             .build()
     );
-    public final ItemListSetting itemNames = scGeneral.add(createItemListSetting()
+    public final ItemListSetting itemNames = scGeneral.add(ItemListSetting.builder()
             .name("required-items")
             .description("Items that switch the module on while held.")
             .def("")
