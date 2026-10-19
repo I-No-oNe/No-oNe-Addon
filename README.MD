@@ -15,23 +15,23 @@ playing.
 
 ## 📦 Modules
 
-| Name                  | Description                                                 |
-|-----------------------|-------------------------------------------------------------|
-| Gui Features Disabler | Cancels the annoying things inside the ClickCrystals GUI    |
-| Infinite Chat         | Removes the 256-character limit from chat                   |
-| Cape Disabler         | Disables ClickCrystals capes for vanilla cape               |
-| Middle Click Ping     | Pings a player in chat when you middle-click on them        |
-| Loot Keeper           | Prevents specific items from being dropped or lost          |
-| No Potions Render     | Hides potion effects from the Potion HUD                    |
-| Hit Color             | Changes the hit flash color of entities                     |
-| Dm Spammer            | Spams private messages to selected players                  |
-| Mod Menu Disabler     | Hides ClickCrystals from mod menu, **REQUIRES RESTART**     |
-| Upside Down           | Renders all players and entities upside down                |
-| Prevent               | Blocks accidental glowstone or anchor placements            |
-| Anti Off Hand         | Prevents off-hand swapping under specific conditions        |
-| Ghost Interactions    | Prevents sending packets when closing containers            |
-| Safe Walk             | Automatically sneaks at the edge of blocks                  |
-| Name Changer          | Changes the displayed name of the player (client-side only) |
+| Name                  | Description                                                                    |
+|-----------------------|--------------------------------------------------------------------------------|
+| GUI Features Disabler | Strips the popups ClickCrystals shows over its own menu                          |
+| Infinite Chat         | Lifts the 256 character limit on chat messages                                  |
+| Cape Disabler         | Shows vanilla capes instead of ClickCrystals ones, and drops the staff greetings |
+| Middle Click Ping     | Middle-click a player to read their ping out in chat                            |
+| Loot Keeper           | Throws out your hotbar on a key, keeping only the items worth keeping            |
+| No Potion HUD         | Hides the potion effect icons in the corner of the screen                        |
+| Hit Color             | Recolors the flash an entity shows when it takes a hit                          |
+| DM Spammer            | Repeats a private message to a list of players on a timer                        |
+| Mod Menu Disabler     | Hides chosen mods from Mod Menu, applied on the next launch                      |
+| Upside Down           | Flips the entities around you upside down                                       |
+| No Misplace           | Blocks the glowstone and anchor placements that waste an anchor                  |
+| Anti Off Hand         | Blocks the off-hand swap key while you are holding items you cannot afford to move |
+| Ghost Interactions    | Keeps containers open server side by never sending the close packet              |
+| Safe Walk             | Holds you back at block edges the way sneaking does                              |
+| Name Changer          | Replaces your name with another one everywhere the client draws it                |
 
 ---
 
